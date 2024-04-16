@@ -1,1 +1,3 @@
-# auto-remainder
+# Quinn: Driving productivity through smart automation
+
+As a Squad Leader, my day-to-day responsibilities include ensuring that every intern is on track with their assigned tasks. To streamline this process, I've developed a bot using Selenium. This tool is designed to enhance our workflow by automatically logging in, identifying the correct team member within our group chats, and sending personalized reminders to each intern. It meticulously avoids messaging non-targeted members, ensuring that each communication is relevant and direct. After completing its rounds, the bot gracefully exits the browser.
