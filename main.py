@@ -1,5 +1,5 @@
 from _controller import Quinn
-from _driver import DRIVER
+from _utlis_functions import open_browser, close_browser
 from _variables import (
     URL,
     MS_ACC_LOG_IN,
@@ -9,9 +9,9 @@ from _variables import (
     CHAT_ICON,
 )
 
-DRIVER.get(URL)
-DRIVER.maximize_window()
-quinn = Quinn(DRIVER)
+open_browser(URL)
+
+quinn = Quinn()
 
 quinn.add_date()
 quinn.click_on('MS ACC log in', MS_ACC_LOG_IN)
@@ -20,4 +20,4 @@ quinn.click_on("team selector", CHOOSE_TEAM)
 quinn.click_on("team log in", TEAM_LOG_IN)
 quinn.click_on("Chat icon", CHAT_ICON)
 
-DRIVER.quit()
+close_browser()

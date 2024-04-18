@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
+from _driver import DRIVER
 from _variables import (
     TIME_STAMP,
     TIME_OUT,
@@ -11,8 +12,8 @@ from _variables import (
 
 class Quinn:
 
-    def __init__(self, driver):
-        self.driver = driver
+    def __init__(self):
+        pass
 
     def add_date(self):
         """ Add dates to the log files. """
@@ -43,7 +44,7 @@ class Quinn:
         """Waits for a certain amount of time and if it finds the
         element then returns the webElement otherwise None"""
         try:
-            wait = WebDriverWait(self.driver, TIME_OUT)
+            wait = WebDriverWait(DRIVER, TIME_OUT)
             element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, element_selector)))
             self.logs(f"We have waited for {element_name} = {element} element to FOUND on the page")
             return element
