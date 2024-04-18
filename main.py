@@ -19,5 +19,8 @@ quinn.click_on("Dropdown select team", DROPDOWN_SELECT_TEAM)
 quinn.click_on("team selector", CHOOSE_TEAM)
 quinn.click_on("team log in", TEAM_LOG_IN)
 quinn.click_on("Chat icon", CHAT_ICON)
+quinn.find_interns_imc()
+quinn.create_intern_name_and_web_element_dict()
+quinn.log_interns_name_list()
 
 close_browser()

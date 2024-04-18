@@ -15,3 +15,19 @@ DROPDOWN_SELECT_TEAM = "button.guest-license-error-dropdown.ts-sym[type='button'
 CHOOSE_TEAM = "ul.guest-license-error-menu li:nth-child(2) span.tenant-name"
 TEAM_LOG_IN = "button.guest-license-error-button"
 CHAT_ICON = "ul > li:nth-child(2) button.app-bar-link.app-bar-button"
+COMMON_GROUP_MEMBER_NAME = '<John Doe>' #eg. NameOfManager
+# Without pin items
+INTERNS_IMC = f'div[data-tid="active-chat-list"] > div[data-tid*="{COMMON_GROUP_MEMBER_NAME}"]'
+INTERN_IMC_NAME = '.cle-title > .single-line-truncation'
+LAST_VISIBLE_INTERN_IMC_BEFORE_SCROLL = f'{INTERNS_IMC}:last-child'
+
+# IMC group name before and
+NAME_FROM_IMC = [
+    "John something Doe",
+    "John Doe",
+]
+# Actual mention name
+MENTION_NAME = [
+    "John Doe",
+    "John something Doe",
+]
