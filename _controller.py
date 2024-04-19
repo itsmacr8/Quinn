@@ -41,7 +41,7 @@ class Quinn:
             message (str): The log message to write.
             filename (str, optional): The name of the file to write to. Defaults to "./logs/logs.txt".
         """
-        with open(filename, "a") as file:
+        with open(filename, "a", encoding='UTF-8') as file:
             file.write(f"{message}\n")
 
     def click_on(self, element_name, element_selector):
