@@ -146,6 +146,7 @@ class Quinn:
             found_switch_to_iframe = self.get_and_switch_to_iframe()
             self.input = self.find_input(self.is_input_none())
             self.type_message(found_switch_to_iframe, name)
+            self.mention_user()
             self.press_enter()
             self.switch_to_default_content()
             self.logs(f'Message successfully sent to {name}', './logs/success_sent.txt')
@@ -192,6 +193,27 @@ class Quinn:
 
     def type_message_and_name(self, name):
         self.input.send_keys(f"{MESSAGE} @{name}")
+
+    def mention_user(self):
+        """It mention the username.
+        * The user mention name is dynamically generated.
+        * We cannot select username without start typing.
+        * If we fully type the name and send it then it will not work as mentions.
+        * If we fully type the name then it will not show the mention box.
+        * That's why we must use their name and remove character to show the username box and use tab key to select it.
+        """
+        self.press_backspace()
+        self.press_backspace()
+        self.press_tab()
+
+    def press_backspace(self):
+        """ Pause for 1 second before pressing the enter key. """
+        time.sleep(1)
+        self.input.send_keys(Keys.BACKSPACE)
+
+    def press_tab(self):
+        """ Presses the tab key """
+        self.input.send_keys(Keys.TAB)
 
     def press_enter(self):
         """ Pause for .75 second before and after pressing the enter key.
