@@ -27,6 +27,7 @@ class Quinn:
     def __init__(self):
         self.elements = []
         self.in_cwe = {}
+        self.input = None
 
     def add_date(self):
         """ Add dates to the log files. """
@@ -142,9 +143,10 @@ class Quinn:
     def send_message(self):
         for name, imc in self.in_cwe.items():
             self.click_on_intern_imc(name, imc)
-            _input = self.is_web_element_exist('Input element', INPUT)
-            self.type_message(self.get_and_switch_to_iframe(), _input, name)
-            self.press_enter(_input)
+            found_switch_to_iframe = self.get_and_switch_to_iframe()
+            self.input = self.find_input(self.is_input_none())
+            self.type_message(found_switch_to_iframe, name)
+            self.press_enter()
             self.switch_to_default_content()
             self.logs(f'Message successfully sent to {name}', './logs/success_sent.txt')
 
@@ -159,8 +161,8 @@ class Quinn:
         if found_and_switch_iframe:
             self.type_message_and_name(name)
 
-    def type_message_and_name(self, _input, name):
-        _input.send_keys(f"{MESSAGE} @{name}")
+    def type_message_and_name(self, name):
+        self.input.send_keys(f"{MESSAGE} @{name}")
 
     def get_and_switch_to_iframe(self):
         """ Return true if iframe element found and switch to the iframe content """
@@ -179,12 +181,24 @@ class Quinn:
             self.logs(f"Error finding iframe element = {iframe}. The error message is: {e}")
             return None
 
-    def press_enter(self, _input):
+    def find_input(self, input_is_none):
+        if input_is_none:
+            return self.is_web_element_exist('Input element', INPUT)
+        else:
+            return self.input
+
+    def is_input_none(self):
+        if self.input is None:
+            return True
+        else:
+            return False
+
+    def press_enter(self):
         """ Pause for .75 second before and after pressing the enter key.
-        * We cannot use _input.submit() because to use it,
+        * We cannot use self.input.submit() because to use it,
         it has to inside form tag. """
         time.sleep(0.75)
-        _input.send_keys(Keys.ENTER)
+        self.input.send_keys(Keys.ENTER)
         time.sleep(.75)
 
     def switch_to_iframe_content(self, iframe):
