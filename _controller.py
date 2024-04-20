@@ -20,6 +20,7 @@ from _variables import (
     INPUT,
     MESSAGE,
 )
+from _utlis_functions import logs
 
 
 class Quinn:
@@ -37,17 +38,8 @@ class Quinn:
             "./logs/error_sent.txt",
         ]
         for file_name in files_name:
-            self.logs("\n\n", file_name)
-            self.logs(TIME_STAMP, file_name)
-
-    def logs(self, message, filename="./logs/logs.txt"):
-        """Writes a log message to a file, appending if the file exists.
-        Args:
-            message (str): The log message to write.
-            filename (str, optional): The name of the file to write to. Defaults to "./logs/logs.txt".
-        """
-        with open(filename, "a", encoding='UTF-8') as file:
-            file.write(f"{message}\n")
+            logs("\n\n", file_name)
+            logs(TIME_STAMP, file_name)
 
     def click_on(self, element_name, element_selector):
         element = self.is_web_element_exist(element_name, element_selector)
@@ -60,10 +52,10 @@ class Quinn:
         try:
             wait = WebDriverWait(DRIVER, TIME_OUT)
             element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, element_selector)))
-            self.logs(f"We have waited for {element_name} = {element} element to FOUND on the page")
+            logs(f"We have waited for {element_name} = {element} element to FOUND on the page")
             return element
         except TimeoutException:
-            self.logs(f"Element {element_name} (with selector {element_selector}) NOT FOUND 🚫 after {TIME_OUT} seconds.")
+            logs(f"Element {element_name} (with selector {element_selector}) NOT FOUND 🚫 after {TIME_OUT} seconds.")
             return None
 
     def find_interns_imc(self):
@@ -100,7 +92,7 @@ class Quinn:
             self.in_cwe[intern_name] = element
 
     def log_interns_name_list(self):
-        self.logs(
+        logs(
             f"We found {len(self.in_cwe)} members. {[name for name in self.in_cwe]}",
             "./logs/success_sent.txt",
         )
@@ -111,7 +103,7 @@ class Quinn:
             try:
                 return MENTION_NAME[index]
             except IndexError:
-                self.logs(
+                logs(
                     f"We could not fix the mention name of {name}",
                     "./logs/error_mention_name.txt",
                 )
@@ -149,13 +141,13 @@ class Quinn:
             self.mention_user()
             self.press_enter()
             self.switch_to_default_content()
-            self.logs(f'Message successfully sent to {name}', './logs/success_sent.txt')
+            logs(f'Message successfully sent to {name}', './logs/success_sent.txt')
 
     def click_on_intern_imc(self, name, imc):
         try:
             imc.click()
         except Exception as e:
-            self.logs(f"We could not 🚫 click 👆 on {name} = {imc}. The error message is {e}", "./logs/error_sent.txt")
+            logs(f"We could not 🚫 click 👆 on {name} = {imc}. The error message is {e}", "./logs/error_sent.txt")
 
     def get_and_switch_to_iframe(self):
         """ Return true if iframe element found and switch to the iframe content """
@@ -171,7 +163,7 @@ class Quinn:
             iframe = wait.until(EC.presence_of_element_located((By.TAG_NAME, "iframe")))
             return iframe
         except (NoSuchElementException, TimeoutException) as e:
-            self.logs(f"Error finding iframe element = {iframe}. The error message is: {e}")
+            logs(f"Error finding iframe element = {iframe}. The error message is: {e}")
             return None
 
     def find_input(self, input_is_none):
