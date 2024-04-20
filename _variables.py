@@ -20,6 +20,9 @@ COMMON_GROUP_MEMBER_NAME = '<John Doe>' #eg. NameOfManager
 INTERNS_IMC = f'div[data-tid="active-chat-list"] > div[data-tid*="{COMMON_GROUP_MEMBER_NAME}"]'
 INTERN_IMC_NAME = '.cle-title > .single-line-truncation'
 LAST_VISIBLE_INTERN_IMC_BEFORE_SCROLL = f'{INTERNS_IMC}:last-child'
+INPUT = "div[data-tid='ckeditor'] > p.ck-placeholder"
+# Cannot use emojis 🚀. It throws errors because it cannot perse them.
+MESSAGE = "<Your Message>"
 
 # IMC group name before and
 NAME_FROM_IMC = [

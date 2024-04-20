@@ -22,5 +22,6 @@ quinn.click_on("Chat icon", CHAT_ICON)
 quinn.find_interns_imc()
 quinn.create_intern_name_and_web_element_dict()
 quinn.log_interns_name_list()
+quinn.send_message()
 
 close_browser()

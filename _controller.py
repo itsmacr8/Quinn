@@ -1,8 +1,10 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
+# for special keys ENTER, TAB etc.
+from selenium.webdriver.common.keys import Keys
 import time
 import re
 
@@ -15,6 +17,8 @@ from _variables import (
     LAST_VISIBLE_INTERN_IMC_BEFORE_SCROLL,
     NAME_FROM_IMC,
     MENTION_NAME,
+    INPUT,
+    MESSAGE,
 )
 
 
@@ -134,3 +138,57 @@ class Quinn:
 
     def get_text(self, element):
         return element.text
+
+    def send_message(self):
+        for name, imc in self.in_cwe.items():
+            self.click_on_intern_imc(name, imc)
+            _input = self.is_web_element_exist('Input element', INPUT)
+            self.type_message(self.get_and_switch_to_iframe(), _input, name)
+            self.press_enter(_input)
+            self.switch_to_default_content()
+            self.logs(f'Message successfully sent to {name}', './logs/success_sent.txt')
+
+    def click_on_intern_imc(self, name, imc):
+        try:
+            imc.click()
+        except Exception as e:
+            self.logs(f"We could not 🚫 click 👆 on {name} = {imc}. The error message is {e}", "./logs/error_sent.txt")
+
+    def type_message(self, found_and_switch_iframe, name):
+        """If the given condition is true then it types the necessary messages."""
+        if found_and_switch_iframe:
+            self.type_message_and_name(name)
+
+    def type_message_and_name(self, _input, name):
+        _input.send_keys(f"{MESSAGE} @{name}")
+
+    def get_and_switch_to_iframe(self):
+        """ Return true if iframe element found and switch to the iframe content """
+        iframe = self.get_iframe()
+        if iframe:
+            self.switch_to_iframe_content(iframe)
+            return True
+
+    def get_iframe(self):
+        """Return the iframe object reference if found otherwise None"""
+        try:
+            wait = WebDriverWait(DRIVER, TIME_OUT)
+            iframe = wait.until(EC.presence_of_element_located((By.TAG_NAME, "iframe")))
+            return iframe
+        except (NoSuchElementException, TimeoutException) as e:
+            self.logs(f"Error finding iframe element = {iframe}. The error message is: {e}")
+            return None
+
+    def press_enter(self, _input):
+        """ Pause for .75 second before and after pressing the enter key.
+        * We cannot use _input.submit() because to use it,
+        it has to inside form tag. """
+        time.sleep(0.75)
+        _input.send_keys(Keys.ENTER)
+        time.sleep(.75)
+
+    def switch_to_iframe_content(self, iframe):
+        DRIVER.switch_to.frame(iframe)
+
+    def switch_to_default_content(self):
+        DRIVER.switch_to.default_content()
