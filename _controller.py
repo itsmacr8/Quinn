@@ -156,14 +156,6 @@ class Quinn:
         except Exception as e:
             self.logs(f"We could not 🚫 click 👆 on {name} = {imc}. The error message is {e}", "./logs/error_sent.txt")
 
-    def type_message(self, found_and_switch_iframe, name):
-        """If the given condition is true then it types the necessary messages."""
-        if found_and_switch_iframe:
-            self.type_message_and_name(name)
-
-    def type_message_and_name(self, name):
-        self.input.send_keys(f"{MESSAGE} @{name}")
-
     def get_and_switch_to_iframe(self):
         """ Return true if iframe element found and switch to the iframe content """
         iframe = self.get_iframe()
@@ -192,6 +184,14 @@ class Quinn:
             return True
         else:
             return False
+
+    def type_message(self, found_and_switch_iframe, name):
+        """If the given condition is true then it types the necessary messages."""
+        if found_and_switch_iframe:
+            self.type_message_and_name(name)
+
+    def type_message_and_name(self, name):
+        self.input.send_keys(f"{MESSAGE} @{name}")
 
     def press_enter(self):
         """ Pause for .75 second before and after pressing the enter key.
