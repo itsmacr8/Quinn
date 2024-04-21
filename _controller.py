@@ -133,11 +133,12 @@ class Quinn:
         return element.text
 
     def send_message(self):
+        iframe = self.get_iframe()
         for name, imc in self.in_cwe.items():
             self.click_on_intern_imc(name, imc)
-            found_switch_to_iframe = self.get_and_switch_to_iframe()
+            self.switch_to_iframe_content(iframe)
             self.input = self.find_input(self.is_input_none())
-            self.type_message(found_switch_to_iframe, name)
+            self.type_message(name)
             self.mention_user()
             self.press_enter()
             self.switch_to_default_content()
@@ -148,13 +149,6 @@ class Quinn:
             imc.click()
         except Exception as e:
             logs(f"We could not 🚫 click 👆 on {name} = {imc}. The error message is {e}", "./logs/error_sent.txt")
-
-    def get_and_switch_to_iframe(self):
-        """ Return true if iframe element found and switch to the iframe content """
-        iframe = self.get_iframe()
-        if iframe:
-            self.switch_to_iframe_content(iframe)
-            return True
 
     def get_iframe(self):
         """Return the iframe object reference if found otherwise None"""
@@ -178,12 +172,8 @@ class Quinn:
         else:
             return False
 
-    def type_message(self, found_and_switch_iframe, name):
-        """If the given condition is true then it types the necessary messages."""
-        if found_and_switch_iframe:
-            self.type_message_and_name(name)
-
-    def type_message_and_name(self, name):
+    def type_message(self, name):
+        """Types the necessary messages and the intern's name."""
         self.input.send_keys(f"{MESSAGE} @{name}")
 
     def mention_user(self):
