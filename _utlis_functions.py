@@ -1,11 +1,34 @@
+from time import time
 from sys import argv
 from _driver import DRIVER
 
+
+program_start_time = 0
+program_end_time = 0
+
+
+def timer(when):
+    """ Start the timer """
+    global program_start_time, program_end_time
+    if when == 'start':
+        program_start_time = time()
+    else:
+        program_end_time = time()
+        log_program_execution_time()
+
+def log_program_execution_time():
+    execution_time = program_end_time - program_start_time
+    minutes = int(execution_time // 60)
+    seconds = int(execution_time % 60)
+    logs(f'The program took {minutes:02d} minutes and {seconds:02d} seconds.', './logs/success_sent.txt')
+
 def open_browser(url):
+    timer('start')
     DRIVER.get(url)
     DRIVER.maximize_window()
 
 def close_browser():
+    timer('end')
     DRIVER.quit()
 
 def logs(message, filename="./logs/logs.txt"):
