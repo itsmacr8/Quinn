@@ -189,7 +189,7 @@ class Quinn:
         self.press_tab()
 
     def press_backspace(self):
-        """ Pause for 1 second before pressing the enter key. """
+        """ Pause for 1 second before pressing the backspace key. """
         time.sleep(1)
         self.input.send_keys(Keys.BACKSPACE)
 
