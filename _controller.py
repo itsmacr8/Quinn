@@ -20,7 +20,7 @@ from _variables import (
     INPUT,
     MESSAGE,
 )
-from _utlis_functions import logs
+from _utlis_functions import logs, is_testing
 
 
 class Quinn:
@@ -201,6 +201,8 @@ class Quinn:
         """ Pause for .75 second before and after pressing the enter key.
         * We cannot use self.input.submit() because to use it,
         it has to inside form tag. """
+        if is_testing():
+            return
         time.sleep(0.75)
         self.input.send_keys(Keys.ENTER)
         time.sleep(.75)

@@ -1,3 +1,4 @@
+from sys import argv
 from _driver import DRIVER
 
 def open_browser(url):
@@ -15,3 +16,12 @@ def logs(message, filename="./logs/logs.txt"):
     """
     with open(filename, "a", encoding='UTF-8') as file:
         file.write(f"{message}\n")
+
+def is_testing():
+    """ Check if we are running the program in testing mode.
+    * If we pass argument from the command line then we are only testing the
+    code functionality without sending the messages to the interns. """
+    try:
+        return argv[1]
+    except IndexError:
+        return None
