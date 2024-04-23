@@ -34,3 +34,12 @@ MENTION_NAME = [
     "John Doe",
     "John something Doe",
 ]
+# We should use 'mm-dd-yyyy' exact date format or change the DATE_FORMAT,
+# otherwise it will throw error. For example, we cannot use 01-13-24 or 13-01-24
+# Get the name from success_sent log file intern name list.
+INTERNS_ON_LEAVE = {
+    "name": "mm-dd-yyyy",
+}
+INTERNS_COMPLETED_INTERNSHIP = {
+    "name": "mm-dd-yyyy",
+}

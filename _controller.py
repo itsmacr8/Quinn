@@ -19,9 +19,10 @@ from _variables import (
     MENTION_NAME,
     INPUT,
     MESSAGE,
+    INTERNS_ON_LEAVE,
+    INTERNS_COMPLETED_INTERNSHIP,
 )
-from _utlis_functions import logs, is_testing
-
+from _utlis_functions import logs, is_testing, is_intern_on_leave, is_intern_completed_internship
 
 class Quinn:
 
@@ -133,8 +134,23 @@ class Quinn:
         return element.text
 
     def send_message(self):
+        """ Loop through all interns IMC and send messages to them one by one.
+            * Check if the intern on leave
+            * Check if the intern on leave
+            * Check if the intern completed their internship
+            * Switch to iframe content
+            * Find the input and type the message
+            * Mention the user with username
+            * Switch back to default content
+            * If there are no interns on leave or have completed their
+            internship this week then comment out the appropriate function for
+            efficiency 'check_intern_on_leave' or
+            'check_intern_completed_internship'.
+        """
         iframe = self.get_iframe()
         for name, imc in self.in_cwe.items():
+            if self.check_intern_on_leave(name):continue
+            if self.check_intern_completed_internship(name):continue
             self.click_on_intern_imc(name, imc)
             self.switch_to_iframe_content(iframe)
             self.input = self.find_input(self.is_input_none())
@@ -143,6 +159,14 @@ class Quinn:
             self.press_enter()
             self.switch_to_default_content()
             logs(f'Message successfully sent to {name}', './logs/success_sent.txt')
+
+    def check_intern_on_leave(self, name):
+        if name in INTERNS_ON_LEAVE:
+            return is_intern_on_leave(name)
+
+    def check_intern_completed_internship(self, name):
+        if name in INTERNS_COMPLETED_INTERNSHIP:
+            return is_intern_completed_internship(name)
 
     def click_on_intern_imc(self, name, imc):
         try:
