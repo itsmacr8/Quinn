@@ -1,6 +1,8 @@
 from time import time
+from datetime import datetime
 from sys import argv
 from _driver import DRIVER
+from _variables import INTERNS_ON_LEAVE, INTERNS_COMPLETED_INTERNSHIP, DATE_FORMAT, DATE
 
 
 program_start_time = 0
@@ -48,3 +50,28 @@ def is_testing():
         return argv[1]
     except IndexError:
         return None
+
+def get_comparing_date(date):
+    """Returns date in a comparing format"""
+    return datetime.strptime(date, DATE_FORMAT)
+
+def is_intern_on_leave(name):
+    leave_date = INTERNS_ON_LEAVE[name]
+    leave_end_date = get_comparing_date(leave_date)
+    today_date = get_comparing_date(DATE)
+    return is_true(leave_end_date >= today_date, f'{name} is still on leave. No message needed.')
+
+def is_intern_completed_internship(name):
+    internship_completed_date = INTERNS_COMPLETED_INTERNSHIP[name]
+    internship_end_date = get_comparing_date(internship_completed_date)
+    today_date = get_comparing_date(DATE)
+    return is_true(internship_end_date < today_date, f"You've completed your internship, {name}.")
+
+def is_true(is_true, message):
+    """Check and return true if the intern is on leave or completed the internship
+    and log leave or internship completion message, otherwise false"""
+    if is_true:
+        logs(message, "./logs/success_sent.txt")
+        return True
+    else:
+        return False
