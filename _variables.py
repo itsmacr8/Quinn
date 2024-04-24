@@ -2,7 +2,7 @@ from datetime import date, datetime
 
 
 URL = "https://teams.microsoft.com/"
-TIME_OUT = 59
+TIME_OUT = 30
 
 DATE_FORMAT = "%m-%d-%Y"
 DATE = date.today().strftime(DATE_FORMAT)
