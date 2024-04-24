@@ -53,10 +53,10 @@ class Quinn:
         try:
             wait = WebDriverWait(DRIVER, TIME_OUT)
             element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, element_selector)))
-            logs(f"We have waited for {element_name} = {element} element to FOUND on the page")
+            logs(f"{element_name} = {element} FOUND ✅ on the page")
             return element
         except TimeoutException:
-            logs(f"Element {element_name} (with selector {element_selector}) NOT FOUND 🚫 after {TIME_OUT} seconds.")
+            logs(f"{element_name} with {element_selector} selector NOT FOUND 🚫")
             return None
 
     def find_interns_imc(self):
