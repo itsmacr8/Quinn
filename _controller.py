@@ -152,11 +152,13 @@ class Quinn:
             efficiency 'check_intern_on_leave' or
             'check_intern_completed_internship'.
         """
+        js_executor = DRIVER.execute_script
+        highlight = """arguments[0].style.border='3px solid green'; arguments[0].style.marginBottom='10px';"""
         iframe = self.get_iframe()
         for name, imc in self.in_cwe.items():
             if self.check_intern_on_leave(name):continue
             if self.check_intern_completed_internship(name):continue
-            self.click_on_intern_imc(name, imc)
+            self.click_on_intern_imc(name, imc, highlight, js_executor)
             self.switch_to_iframe_content(iframe)
             self.input = self.find_input(self.is_input_none())
             self.type_message(name)
@@ -173,10 +175,13 @@ class Quinn:
         if name in INTERNS_COMPLETED_INTERNSHIP:
             return is_intern_completed_internship(name)
 
-    def click_on_intern_imc(self, name, imc):
+    def click_on_intern_imc(self, name, imc, highlight, js_executor):
         try:
             imc.click()
+            js_executor(highlight, imc)
         except Exception as e:
+            highlight = """arguments[0].style.border='3px solid red'; arguments[0].style.marginBottom='10px';"""
+            js_executor(highlight, imc)
             logs(f"We could not 🚫 click 👆 on {name} = {imc}. The error message is {e}", "./logs/error_sent.txt")
 
     def get_iframe(self):
