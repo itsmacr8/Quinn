@@ -1,7 +1,7 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, JavascriptException
 
 # for special keys ENTER, TAB etc.
 from selenium.webdriver.common.keys import Keys
@@ -69,13 +69,15 @@ class Quinn:
     def current_last_visible_item(self):
         js_executor = DRIVER.execute_script
         highlight = """arguments[0].style.border='3px solid red'; arguments[0].style.backgroundColor='yellow';"""
-
-        cur_last_vis_item = self.is_web_element_exist(
-            "new_generated_element", LAST_VISIBLE_INTERN_IMC_BEFORE_SCROLL
-        )
-        js_executor(f"arguments[0].scrollIntoView(true);", cur_last_vis_item)
-        js_executor(highlight, cur_last_vis_item)
-        self.elements = self.get_interns_imc_web_element()
+        try:
+            cur_last_vis_item = self.is_web_element_exist(
+                "Chat after scroll", LAST_VISIBLE_INTERN_IMC_BEFORE_SCROLL
+            )
+            js_executor(f"arguments[0].scrollIntoView(true);", cur_last_vis_item)
+            js_executor(highlight, cur_last_vis_item)
+            self.elements = self.get_interns_imc_web_element()
+        except JavascriptException as e:
+            logs(f'We could not find the last visible item to highlight. The error message is {e}', './logs/log_message.txt')
 
     def get_interns_imc_web_element(self):
         """Return all interns imc ui web element"""
