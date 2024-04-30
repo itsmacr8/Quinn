@@ -19,7 +19,14 @@ COMMON_GROUP_MEMBER_NAME = '<John Doe>' #eg. NameOfManager
 # Without pin items
 INTERNS_IMC = f'div[data-tid="active-chat-list"] > div[data-tid*="{COMMON_GROUP_MEMBER_NAME}"]'
 INTERN_IMC_NAME = '.cle-title > .single-line-truncation'
-LAST_VISIBLE_INTERN_IMC_BEFORE_SCROLL = f'{INTERNS_IMC}:last-child'
+ALL_CHATS = f'div[data-tid="active-chat-list"] > div'
+# Total number of IMCs to send message. If someone completes their internship
+# and we remove the IMC from our chat then we must update the number.
+# Otherwise the loop will continue forever to find the total IMCs.
+# For example, if we have 100 IMCs and 5 people complete their internship and we
+# remove them from our IMCs then we will have 95 IMCs but the loop will continue
+# to find 100 IMCs that it will never find and the loop will continue forever.
+TOTAL_MEMBERS = 38
 INPUT = "div[data-tid='ckeditor'] > p.ck-placeholder"
 # Cannot use emojis 🚀. It throws errors because it cannot perse them.
 MESSAGE = "<Your Message>"

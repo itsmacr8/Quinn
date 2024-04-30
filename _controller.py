@@ -14,7 +14,8 @@ from _variables import (
     TIME_OUT,
     INTERN_IMC_NAME,
     INTERNS_IMC,
-    LAST_VISIBLE_INTERN_IMC_BEFORE_SCROLL,
+    ALL_CHATS,
+    TOTAL_MEMBERS,
     NAME_FROM_IMC,
     MENTION_NAME,
     INPUT,
@@ -64,20 +65,22 @@ class Quinn:
         self.scroll_down()
 
     def scroll_down(self):
-        self.current_last_visible_item()
-
-    def current_last_visible_item(self):
         js_executor = DRIVER.execute_script
         highlight = """arguments[0].style.border='3px solid red'; arguments[0].style.backgroundColor='yellow';"""
+        #by default 35-45 chat items are loaded (includes pin chats)
+        scroll_into_view_chat = 30
+        while len(self.find_elements) < TOTAL_MEMBERS:
+            self.current_last_visible_item(js_executor, highlight, scroll_into_view_chat)
+            scroll_into_view_chat += 20
+
+    def current_last_visible_item(self, js_executor, highlight, num):
         try:
-            cur_last_vis_item = self.is_web_element_exist(
-                "Chat after scroll", LAST_VISIBLE_INTERN_IMC_BEFORE_SCROLL
-            )
+            cur_last_vis_item = self.is_web_element_exist("Chat after scroll", f'{ALL_CHATS}:nth-child({num})')
             js_executor(f"arguments[0].scrollIntoView(true);", cur_last_vis_item)
             js_executor(highlight, cur_last_vis_item)
             self.elements = self.get_interns_imc_web_element()
         except JavascriptException as e:
-            logs(f'We could not find the last visible item to highlight. The error message is {e}', './logs/log_message.txt')
+            logs(f'Chat NOT FOUND 🚫. The error message is {e}', './logs/log_message.txt')
 
     def get_interns_imc_web_element(self):
         """Return all interns imc ui web element"""
