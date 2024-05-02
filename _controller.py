@@ -119,17 +119,15 @@ class Quinn:
 
     def get_intern_name(self, name):
         """
-        This regex extract the first part from a given string.
-        It will extract if the second part start with '(' or 'and' or '&'
-        * Name ()
-        * Name()
-        * Name () and
-        * Name and
-        * Name &
+        * Name (*)
+        * Name(*)
+        * Name (*) and *
+        * Name and *
+        * Name & *
+        * Name and * (*)
+        * Nameand and * (basically name that has 'and' characters in it eg. andres)
         """
-        match = re.search(
-            r"([A-Za-z\s]+)(?:\s*\(|\s*and|\s*&)", name.lower(), re.IGNORECASE
-        )
+        match = re.search(r"([^\s]+(?:\s+[^\s]+)*?)(?:\s+and\s+|\s*&\s*|\s*\().*", name, re.IGNORECASE)
         if match:
             return match.group(1).strip().title()
         else:
