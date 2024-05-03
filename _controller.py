@@ -22,6 +22,10 @@ from _variables import (
     MESSAGE,
     INTERNS_ON_LEAVE,
     INTERNS_COMPLETED_INTERNSHIP,
+    SCROLL_HIGHLIGHT,
+    MESS_SENT_HIGHLIGHT,
+    MESS_ERR_HIGHLIGHT,
+    JS_EXECUTOR
 )
 from _utlis_functions import logs, is_testing, is_intern_on_leave, is_intern_completed_internship
 
@@ -65,19 +69,17 @@ class Quinn:
         self.scroll_down()
 
     def scroll_down(self):
-        js_executor = DRIVER.execute_script
-        highlight = """arguments[0].style.border='3px solid red'; arguments[0].style.backgroundColor='yellow';"""
         #by default 35-45 chat items are loaded (includes pin chats)
         scroll_into_view_chat = 30
         while len(self.find_elements) < TOTAL_MEMBERS:
-            self.current_last_visible_item(js_executor, highlight, scroll_into_view_chat)
+            self.current_last_visible_item(scroll_into_view_chat)
             scroll_into_view_chat += 20
 
-    def current_last_visible_item(self, js_executor, highlight, num):
+    def current_last_visible_item(self, num):
         try:
             cur_last_vis_item = self.is_web_element_exist("Chat after scroll", f'{ALL_CHATS}:nth-child({num})')
-            js_executor(f"arguments[0].scrollIntoView(true);", cur_last_vis_item)
-            js_executor(highlight, cur_last_vis_item)
+            JS_EXECUTOR(f"arguments[0].scrollIntoView(true);", cur_last_vis_item)
+            JS_EXECUTOR(SCROLL_HIGHLIGHT, cur_last_vis_item)
             self.elements = self.get_interns_imc_web_element()
         except JavascriptException as e:
             logs(f'Chat NOT FOUND 🚫. The error message is {e}', './logs/log_message.txt')
@@ -150,13 +152,11 @@ class Quinn:
             efficiency 'check_intern_on_leave' or
             'check_intern_completed_internship'.
         """
-        js_executor = DRIVER.execute_script
-        highlight = """arguments[0].style.border='3px solid green'; arguments[0].style.marginBottom='10px';"""
         iframe = self.get_iframe()
         for name, imc in self.in_cwe.items():
             if self.check_intern_on_leave(name):continue
             if self.check_intern_completed_internship(name):continue
-            self.click_on_intern_imc(name, imc, highlight, js_executor)
+            self.click_on_intern_imc(name, imc)
             self.switch_to_iframe_content(iframe)
             self.input = self.find_input(self.is_input_none())
             self.type_message(name)
@@ -173,13 +173,13 @@ class Quinn:
         if name in INTERNS_COMPLETED_INTERNSHIP:
             return is_intern_completed_internship(name)
 
-    def click_on_intern_imc(self, name, imc, highlight, js_executor):
+    def click_on_intern_imc(self, name, imc):
         try:
             imc.click()
-            js_executor(highlight, imc)
+            JS_EXECUTOR(MESS_SENT_HIGHLIGHT, imc)
         except Exception as e:
-            highlight = """arguments[0].style.border='3px solid red'; arguments[0].style.marginBottom='10px';"""
-            js_executor(highlight, imc)
+            JS_EXECUTOR(MESS_ERR_HIGHLIGHT, imc)
+            logs(f"Could not sent message to {name} 😒", "./logs/success_sent.txt")
             logs(f"We could not 🚫 click 👆 on {name} = {imc}. The error message is {e}", "./logs/error_sent.txt")
 
     def get_iframe(self):

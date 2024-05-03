@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from _driver import DRIVER
 
 
 URL = "https://teams.microsoft.com/"
@@ -30,6 +31,11 @@ TOTAL_MEMBERS = 38
 INPUT = "div[data-tid='ckeditor'] > p.ck-placeholder"
 # Cannot use emojis 🚀. It throws errors because it cannot perse them.
 MESSAGE = "<Your Message>"
+
+SCROLL_HIGHLIGHT = """arguments[0].style.border='3px solid #9b39ff';"""
+MESS_SENT_HIGHLIGHT = """arguments[0].style.border='3px solid #32ff32'; arguments[0].style.marginBottom='10px';"""
+MESS_ERR_HIGHLIGHT = """arguments[0].style.border='3px solid #ff4545'; arguments[0].style.marginBottom='10px';"""
+JS_EXECUTOR = DRIVER.execute_script
 
 # IMC group name before and
 NAME_FROM_IMC = [
