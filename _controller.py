@@ -65,19 +65,21 @@ class Quinn:
             return None
 
     def find_interns_imc(self):
+        """ Scrolls down as many times as need to find the total number of IMCs.
+        * It increases with 20 number with each scrolls down.
+        For example, if previously scrolls to 30th chat and could not find
+        total number of IMCs then next scroll will be 50th chat and so on.
+        """
         time.sleep(4)
-        self.scroll_down()
-
-    def scroll_down(self):
         #by default 35-45 chat items are loaded (includes pin chats)
-        scroll_into_view_chat = 30
+        scroll_chat_num = 30
         while len(self.find_elements) < TOTAL_MEMBERS:
-            self.current_last_visible_item(scroll_into_view_chat)
-            scroll_into_view_chat += 20
+            self.current_last_visible_item(scroll_chat_num)
+            scroll_chat_num += 20
 
-    def current_last_visible_item(self, num):
+    def current_last_visible_item(self, chat_num):
         try:
-            cur_last_vis_item = self.is_web_element_exist("Chat after scroll", f'{ALL_CHATS}:nth-child({num})')
+            cur_last_vis_item = self.is_web_element_exist("Chat after scroll", f'{ALL_CHATS}:nth-child({chat_num})')
             JS_EXECUTOR(f"arguments[0].scrollIntoView(true);", cur_last_vis_item)
             JS_EXECUTOR(SCROLL_HIGHLIGHT, cur_last_vis_item)
             self.elements = self.get_interns_imc_web_element()
