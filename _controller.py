@@ -246,3 +246,6 @@ class Quinn:
 
     def switch_to_default_content(self):
         DRIVER.switch_to.default_content()
+
+    def count_interns(self,):
+        logs(f'The total number of interns is {len(self.in_cwe)}, interns on leave is {len(INTERNS_ON_LEAVE)}, and interns completed their internship is {len(INTERNS_COMPLETED_INTERNSHIP)}.', './logs/success_sent.txt')

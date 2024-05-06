@@ -23,5 +23,6 @@ quinn.find_interns_imc()
 quinn.create_intern_name_and_web_element_dict()
 quinn.log_interns_name_list()
 quinn.send_message()
+quinn.count_interns()
 
 close_browser()
