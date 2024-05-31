@@ -131,9 +131,11 @@ class Quinn:
         * Name and * (*)
         * Nameand and * (basically name that has 'and' characters in it eg. andres)
         """
-        match = re.search(r"([^\s]+(?:\s+[^\s]+)*?)(?:\s+and\s+|\s*&\s*|\s*\().*", name, re.IGNORECASE)
+        match = re.search(
+            r"([^\s]+(?:\s+[^\s]+)*?)(?=\s*\(|\s+and|\s*&)", name, re.IGNORECASE
+        )
         if match:
-            return match.group(1).strip().title()
+            return re.sub(r"\s*\(.+?\)", "", match.group(1)).strip().title()
         else:
             return None
 
